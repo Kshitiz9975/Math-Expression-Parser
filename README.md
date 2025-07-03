@@ -1,36 +1,37 @@
 # Math Expression Parser
 
-This project is a Lex-based (Flex) tokenizer for mathematical expressions.
+This is a simple math expression parser written in C using Flex (Lex). It includes enums for operators and operands, exported lexer interfaces, and a basic scanner definition.
 
 ## Structure
 
-- `include/`
-  - `MexprEnums.h`: Defines math operator/operand enums.
-  - `ParserExport.h`: Declares the lexer interface and data structures.
+- include/
+  - MexprEnums.h: Defines math operator and operand enums.
+  - ParserExport.h: Declares lexer interface and data structures.
+- src/
+  - Parser.l: Lex file defining token rules.
+- Makefile: Build script.
+- README.md: Project overview.
 
-- `src/`
-  - `Parser.l`: Lex file defining the token rules.
+## Features
+
+- Enum definitions for mathematical operators, operands, and datatypes.
+- Flex-based lexical analyzer for parsing math expressions.
+- Header files for managing tokens, stack rewinding, and parsing macros.
+
+## Prerequisites
+
+- Flex
+- GCC or compatible C compiler
 
 ## Building
 
-Requires `flex` and `gcc`.
+Run:
 
-```bash
-make
-```
+    make
 
-This produces `parser`.
+This will:
 
-## Usage
+- Generate `lex.yy.c` from `src/Parser.l`
+- Compile it into the `parser` executable
 
-To test:
 
-```bash
-echo "2 + 2" | ./parser
-```
-
-You'll want to add your own main() to call yylex() for real parsing.
-
-## License
-
-MIT (or your choice).

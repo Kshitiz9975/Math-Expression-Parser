@@ -51,15 +51,6 @@ yyrewind (int n) {
     yy_scan_string(curr_ptr);
 }
 
-unsigned char *
-parser_alloc_token_value_default (uint16_t token_id) {
-
-    unsigned char *ptr = (unsigned char *)(calloc (1, yyleng + 1));
-    strncpy (ptr, yytext, yyleng);
-    ptr [yyleng] = '\0';
-    return (void *)ptr;
-}
-
 int 
 cyylex () {
 
@@ -68,7 +59,8 @@ cyylex () {
     lex_data_t lex_data;
     lex_data.token_code = token_code;
     lex_data.token_len = yyleng;
-    lex_data.token_val = parser_alloc_token_value_default  (token_code);
+    lex_data.token_val = (char*)calloc(1,yyleng+1);
+    strncpy(lex_data.token_val,yytext,yyleng+1);
     lex_push(lex_data);
     return token_code;
 }

@@ -275,7 +275,7 @@ lex_set_scan_buffer (const char *buffer) {
 
 %%
 
-#if 0
+
 
 #include <string.h>
 

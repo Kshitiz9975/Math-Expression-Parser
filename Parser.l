@@ -276,11 +276,38 @@ lex_set_scan_buffer (const char *buffer) {
 %%
 
 #if 0
-int 
-main (int argc) {
 
-    int token_code = cyylex();
-    printf ("token_code = %d,  token = %s \n", token_code, yytext);
+#include <string.h>
+
+
+int main(int argc, char **argv) {
+    while (1) {
+        printf("INPUT: ");
+
+        // Take input
+        if (fgets(lex_buffer, sizeof(lex_buffer), stdin) == NULL)
+            break;
+
+        // Ignore empty line
+        if (lex_buffer[0] == '\n') {
+            lex_buffer[0] = 0;
+            continue;
+        }
+
+        // Pass to lexer
+        yy_scan_string(lex_buffer);
+
+        int token_code = yylex();
+
+        // Loop until end-of-line token is seen
+        while (token_code != PARSER_EOL) {
+            printf("token_code = %d, token = %s, token_len = %d\n",
+                   token_code, yytext, yyleng);
+            token_code = yylex(); // Move to next token
+        }
+    }
+
     return 0;
 }
+
 #endif

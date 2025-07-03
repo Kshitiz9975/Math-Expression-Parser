@@ -279,35 +279,36 @@ lex_set_scan_buffer (const char *buffer) {
 
 #include <string.h>
 
-
 int main(int argc, char **argv) {
     while (1) {
         printf("INPUT: ");
-
-        // Take input
-        if (fgets(lex_buffer, sizeof(lex_buffer), stdin) == NULL)
+        
+        // Read user input into lex_buffer
+        if (fgets((char *)lex_buffer, sizeof(lex_buffer), stdin) == NULL)
             break;
 
-        // Ignore empty line
+        // Skip if empty line
         if (lex_buffer[0] == '\n') {
             lex_buffer[0] = 0;
             continue;
         }
 
-        // Pass to lexer
-        yy_scan_string(lex_buffer);
+        // Reset stack and pointer
+        Parser_stack_reset();
+        lex_set_scan_buffer((char *)lex_buffer);
 
-        int token_code = yylex();
+        int token_code = cyylex();
 
         // Loop until end-of-line token is seen
         while (token_code != PARSER_EOL) {
             printf("token_code = %d, token = %s, token_len = %d\n",
                    token_code, yytext, yyleng);
-            token_code = yylex(); // Move to next token
+            token_code = cyylex(); // Advance to next token
         }
     }
 
     return 0;
 }
+
 
 #endif
